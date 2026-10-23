@@ -1,6 +1,9 @@
 // Simula buses recorriendo sus líneas (GPS/AVL) y reportes de ocupación, para ver el mapa y las alertas en vivo.
 // Uso: npm run simular   (requiere API en marcha y datos cargados con npm run seed)
+// Contra el sitio publicado: API_URL=https://SU-DIRECCION/api y SEED_ADMIN_PASSWORD=<clave del admin>.
 const API = process.env.API_URL ?? 'http://localhost:4000/api';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'admin@transmetro.gt';
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? 'Admin123!';
 
 async function call(path: string, token: string | null, method = 'GET', body?: unknown) {
   const r = await fetch(API + path, {
@@ -13,7 +16,7 @@ async function call(path: string, token: string | null, method = 'GET', body?: u
 }
 
 async function main() {
-  const { token } = await call('/auth/login', null, 'POST', { email: 'admin@transmetro.gt', password: 'Admin123!' });
+  const { token } = await call('/auth/login', null, 'POST', { email: ADMIN_EMAIL, password: ADMIN_PASSWORD });
   const lineas = await call('/lineas', token);
   const recorridos: { buses: any[]; ruta: { lat: number; lon: number; id: number }[] }[] = [];
   for (const l of lineas) {
