@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    container_name: transmetro_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: transmetro
+      POSTGRES_PASSWORD: transmetro
+      POSTGRES_DB: transmetro_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: transmetro_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@transmetro.gt
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+volumes:
+  pgdata:

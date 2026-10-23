@@ -1,0 +1,13 @@
+Fotos de fondo del menú de inicio de sesión (opcionales)
+========================================================
+Coloque aquí imágenes JPG con EXACTAMENTE estos nombres:
+
+  ciudad-de-guatemala.jpg
+  mixco.jpg
+  villa-nueva.jpg
+  san-jose-pinula.jpg
+
+- Se muestran translúcidas y se alternan cada 6 segundos.
+- Si falta alguna, simplemente no se muestra. Si no hay ninguna, el fondo es un degradado azul y verde.
+- Recomendado: horizontales, de 1200 px de alto o más y menos de 500 KB cada una.
+- Use fotos propias o con licencia libre (por ejemplo Wikimedia Commons) y cite la fuente en su documento.

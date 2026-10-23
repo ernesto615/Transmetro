@@ -1,0 +1,3138 @@
+{
+  "info": {
+    "name": "Transmetro API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Pruebas de la API de Transmetro. Primero ejecute '1. Autenticación > Login administrador', copie el token a la variable de entorno 'token'."
+  },
+  "item": [
+    {
+      "name": "0. Público (sin token)",
+      "item": [
+        {
+          "name": "Red de líneas y estaciones (mapa)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/red",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "red"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Recargar tarjeta sin iniciar sesión",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/recargar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "recargar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-0002-2026\",\n  \"monto\": 10,\n  \"referencia\": \"pub-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "404 · Recargar tarjeta inexistente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/recargar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "recargar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-9999-9999\",\n  \"monto\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 · Monto inválido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/recargar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "recargar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-0002-2026\",\n  \"monto\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Enviar sugerencia o queja",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/sugerencias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "sugerencias"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"QUEJA\",\n  \"mensaje\": \"El bus de la línea 1 llegó muy tarde esta mañana.\",\n  \"id_linea\": 1,\n  \"nombre\": \"Ana\",\n  \"contacto\": \"5555-0123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 · Mensaje demasiado corto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/sugerencias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "sugerencias"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"QUEJA\",\n  \"mensaje\": \"corto\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Autenticación",
+      "item": [
+        {
+          "name": "Login administrador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@transmetro.gt\",\n  \"password\": \"Admin123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login operador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"operador@transmetro.gt\",\n  \"password\": \"Oper12345!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login guardia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"guardia@transmetro.gt\",\n  \"password\": \"Guardia123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login municipal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"municipal@transmetro.gt\",\n  \"password\": \"Muni12345!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Quién soy (/auth/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Municipalidades",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/municipalidades",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "municipalidades"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/municipalidades",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "municipalidades"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"San Miguel Petapa\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Líneas",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Detalle de línea 1 (recorrido, buses, cumplimiento)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas/1/detalle",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas",
+                "1",
+                "detalle"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Cumplimiento de línea 1",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas/1/cumplimiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas",
+                "1",
+                "cumplimiento"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Crear línea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Línea 4 Prueba\",\n  \"id_municipalidad\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Definir recorrido de la línea 3 (reemplaza paradas)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas/3/estaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas",
+                "3",
+                "estaciones"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paradas\": [\n    {\n      \"id_estacion\": 4,\n      \"distancia_a_siguiente_km\": 6.0\n    },\n    {\n      \"id_estacion\": 7,\n      \"distancia_a_siguiente_km\": 4.9\n    },\n    {\n      \"id_estacion\": 8,\n      \"distancia_a_siguiente_km\": 0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Editar nombre de línea",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas/3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas",
+                "3"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Línea 3 Sur Express\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Estaciones, accesos y guardias",
+      "item": [
+        {
+          "name": "Listar estaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estaciones"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Distancia entre estaciones 1 y 3 (misma línea)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estaciones/distancia?desde=1&hasta=3",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estaciones",
+                "distancia"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "1"
+                },
+                {
+                  "key": "hasta",
+                  "value": "3"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Distancia entre estaciones 1 y 8 (línea recta)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estaciones/distancia?desde=1&hasta=8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estaciones",
+                "distancia"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "1"
+                },
+                {
+                  "key": "hasta",
+                  "value": "8"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear estación",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/estaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estaciones"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Parque Central\",\n  \"id_municipalidad\": 1,\n  \"latitud\": 14.6407,\n  \"longitud\": -90.5133\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Accesos de la estación 1",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/accesos?id_estacion=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accesos"
+              ],
+              "query": [
+                {
+                  "key": "id_estacion",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear acceso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/accesos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accesos"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Acceso nuevo\",\n  \"id_estacion\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Crear guardia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/guardias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "guardias"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Guardia de prueba\",\n  \"turno\": \"Diurno\",\n  \"id_acceso\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Crear operador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/operadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "operadores"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Operador Zona 6\",\n  \"usuario\": \"operador.zona6\",\n  \"id_estacion\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Parqueos",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/parqueos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "parqueos"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/parqueos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "parqueos"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Parqueo Trébol\",\n  \"capacidad\": 8,\n  \"id_estacion\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Buses",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Crear bus (con parqueo, sin línea)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"TM-200\",\n  \"capacidad_maxima\": 140,\n  \"id_parqueo\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Asignar bus 13 a línea 1",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/13/linea",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "13",
+                "linea"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_linea\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Cambiar bus 13 de parqueo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/13/parqueo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "13",
+                "parqueo"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_parqueo\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Registrar posición GPS del bus 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/1/posicion",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "1",
+                "posicion"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitud\": 14.65,\n  \"longitud\": -90.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Historial de asignaciones del bus 13",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/13/historial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "13",
+                "historial"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Pilotos",
+      "item": [
+        {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pilotos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pilotos"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pilotos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pilotos"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Piloto de prueba\",\n  \"historial_educativo\": \"Bachiller en Ciencias y Letras\",\n  \"direccion_residencia\": \"Zona 12, Ciudad de Guatemala\",\n  \"telefono\": \"5555-0199\",\n  \"email\": \"prueba@transmetro.gt\",\n  \"id_bus\": 14\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Cobros y tarjetas",
+      "item": [
+        {
+          "name": "Listar tarjetas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tarjetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tarjetas"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Registrar tarjeta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tarjetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tarjetas"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-0004-2026\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Recargar saldo (admin indica estación)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tarjetas/recargar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tarjetas",
+                "recargar"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-0002-2026\",\n  \"id_estacion\": 1,\n  \"monto\": 10,\n  \"referencia\": \"recarga-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Cobrar pasaje (tarifa base Q1)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagos"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_tarjeta\": \"TM-0001-2026\",\n  \"id_estacion\": 1,\n  \"referencia\": \"cobro-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Repetir el MISMO cobro (idempotencia: duplicada=true)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagos"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_tarjeta\": \"TM-0001-2026\",\n  \"id_estacion\": 1,\n  \"referencia\": \"cobro-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Listar transacciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagos"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Ocupación, alertas e incidentes",
+      "item": [
+        {
+          "name": "Evaluar ocupación: sobrecupo (≥150%)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocupacion",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ocupacion"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estacion\": 1,\n  \"id_bus\": 1,\n  \"pasajeros_en_espera\": 200,\n  \"pasajeros_a_bordo\": 80\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Evaluar ocupación: bus casi vacío (<25% → +5 min)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ocupacion",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ocupacion"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estacion\": 1,\n  \"id_bus\": 1,\n  \"pasajeros_en_espera\": 10,\n  \"pasajeros_a_bordo\": 15\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Listar alertas abiertas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alertas?atendida=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas"
+              ],
+              "query": [
+                {
+                  "key": "atendida",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Marcar alerta 1 como atendida",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alertas/1/atender",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "1",
+                "atender"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Registrar incidente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/incidentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "incidentes"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Robo\",\n  \"descripcion\": \"Reporte de prueba\",\n  \"id_estacion\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Botón de pánico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/incidentes/panico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "incidentes",
+                "panico"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_estacion\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Listar incidentes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/incidentes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "incidentes"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Reportes y tablero",
+      "item": [
+        {
+          "name": "Tablero (dashboard)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reporte de estaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/estaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "estaciones"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reporte de líneas y buses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/lineas-buses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "lineas-buses"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reporte de accesos por línea",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/accesos-por-linea",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "accesos-por-linea"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reporte de líneas y buses en CSV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/lineas-buses?formato=csv",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "lineas-buses"
+              ],
+              "query": [
+                {
+                  "key": "formato",
+                  "value": "csv"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Casos de error esperados (validan las reglas)",
+      "item": [
+        {
+          "name": "401 · Contraseña incorrecta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@transmetro.gt\",\n  \"password\": \"incorrecta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "401 · Sin token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "400 · Bus sin parqueo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"TM-300\",\n  \"capacidad_maxima\": 100\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 · Parqueo nulo al cambiar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/1/parqueo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "1",
+                "parqueo"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_parqueo\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 · Retirar bus de línea 3 (ya está en el mínimo de 3)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/10/linea",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "10",
+                "linea"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_linea\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 · Asignar bus a línea sin estaciones (crear antes la línea 4)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/14/linea",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "14",
+                "linea"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_linea\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 · Saldo insuficiente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagos"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_tarjeta\": \"TM-0002-2026\",\n  \"id_estacion\": 1,\n  \"monto\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "404 · Bus inexistente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/buses/9999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "buses",
+                "9999"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "403 · (con token de guardia) crear línea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"No permitido\",\n  \"id_municipalidad\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Pasajero (use el token del pasajero)",
+      "item": [
+        {
+          "name": "Registrar cuenta de pasajero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registro"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Pasajero Nuevo\",\n  \"email\": \"nuevo@correo.com\",\n  \"password\": \"Clave12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login pasajero de prueba",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"pasajero@transmetro.gt\",\n  \"password\": \"Pasajero123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Mis tarjetas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Solicitar tarjeta nueva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/solicitar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "solicitar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Vincular tarjeta sin dueño (TM-0003-2026)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/vincular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "vincular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-0003-2026\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Recargar en línea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/recargar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "recargar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"TM-0001-2026\",\n  \"monto\": 20,\n  \"referencia\": \"web-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Historial de mi tarjeta (dónde y cuándo)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/TM-0001-2026/historial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "TM-0001-2026",
+                "historial"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar recorridos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/lineas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "lineas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "403 · Pasajero intenta leer pilotos (debe fallar)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pilotos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pilotos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "404 · Historial de una tarjeta ajena",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/TM-0002-2026/historial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "TM-0002-2026",
+                "historial"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Personal: historial de cualquier tarjeta (token admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tarjetas/TM-0001-2026/historial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tarjetas",
+                "TM-0001-2026",
+                "historial"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mi perfil (DPI/NIT enmascarados)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "perfil"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Solicitar tarjeta con teléfono y DPI",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/solicitar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "solicitar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"5555-0123\",\n  \"dpi\": \"2345678900101\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Solicitar tarjeta con teléfono y NIT",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/solicitar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "solicitar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"5555-0123\",\n  \"nit\": \"1234567-K\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 · Solicitar sin datos (primera vez)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/mi/tarjetas/solicitar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mi",
+                "tarjetas",
+                "solicitar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "13. Horarios y sugerencias (token administrador)",
+      "item": [
+        {
+          "name": "Listar horarios de líneas y estaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/horarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "horarios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Editar horario de la línea 1",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/horarios/lineas/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "horarios",
+                "lineas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"LUNES_VIERNES\": {\n    \"inicio\": \"04:30\",\n    \"fin\": \"22:00\"\n  },\n  \"SABADO\": {\n    \"inicio\": \"05:00\",\n    \"fin\": \"20:00\"\n  },\n  \"DOMINGO_FESTIVOS\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Editar horario de la estación 1",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/horarios/estaciones/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "horarios",
+                "estaciones",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"LUNES_VIERNES\": {\n    \"inicio\": \"05:00\",\n    \"fin\": \"21:00\"\n  },\n  \"SABADO\": null,\n  \"DOMINGO_FESTIVOS\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 · Fin anterior al inicio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/horarios/lineas/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "horarios",
+                "lineas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"LUNES_VIERNES\": {\n    \"inicio\": \"20:00\",\n    \"fin\": \"05:00\"\n  },\n  \"SABADO\": null,\n  \"DOMINGO_FESTIVOS\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ver el horario publicado (sin token)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/publico/red",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "publico",
+                "red"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar sugerencias y quejas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sugerencias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sugerencias"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Marcar sugerencia 1 como resuelta",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sugerencias/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sugerencias",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"RESUELTA\",\n  \"nota_interna\": \"Atendida con la empresa operadora\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Línea 4: detalle (San José Pinula a Trébol)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/lineas/4/detalle",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "lineas",
+                "4",
+                "detalle"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "14. Finanzas y demanda (token administrador)",
+      "item": [
+        {
+          "name": "Flujo de caja de los últimos 6 meses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/resumen?meses=6",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "resumen"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Movimientos registrados",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/movimientos?meses=6",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "movimientos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Registrar un egreso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/movimientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "movimientos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"EGRESO\",\n  \"categoria\": \"Combustible\",\n  \"monto\": 1500,\n  \"fecha\": \"2026-10-19\",\n  \"descripcion\": \"Diésel de la semana\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Registrar un ingreso (subsidio)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/movimientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "movimientos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"INGRESO\",\n  \"categoria\": \"Subsidio municipal\",\n  \"monto\": 40000,\n  \"fecha\": \"2026-10-19\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "400 · Monto negativo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/movimientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "movimientos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"EGRESO\",\n  \"categoria\": \"Combustible\",\n  \"monto\": -5,\n  \"fecha\": \"2026-10-19\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Eliminar el movimiento 1",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/movimientos/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "movimientos",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Demanda por línea (30 días)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/demanda?dias=30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "demanda"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Demanda por línea (7 días)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/demanda?dias=7",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "demanda"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Notificar recomendaciones de capacidad al centro de control",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/demanda/notificar?dias=30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "demanda",
+                "notificar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cobrar pasaje indicando la línea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/pagos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_tarjeta\": \"TM-0001-2026\",\n  \"id_estacion\": 4,\n  \"id_linea\": 2,\n  \"referencia\": \"linea-001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "403 · Operador consulta las finanzas (use token de operador)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/finanzas/resumen",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "finanzas",
+                "resumen"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

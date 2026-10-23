@@ -1,0 +1,26 @@
+# Blueprint opcional de Render: crea el servicio web gratuito con la configuración correcta.
+# La base de datos NO se crea aquí: se usa Neon (gratis y sin tarjeta). Render pedirá los valores marcados "sync: false".
+services:
+  - type: web
+    name: transmetro
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: AUTO_SEED
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATOS_CLAVE
+        generateValue: true

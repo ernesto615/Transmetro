@@ -1,0 +1,9 @@
+{
+  "name": "transmetro",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build && npm --prefix backend install",
+    "start": "npm --prefix backend start"
+  }
+}

@@ -1,0 +1,28 @@
+@import 'leaflet/dist/leaflet.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-paper font-sans text-ink antialiased; }
+  h1, h2, h3 { @apply font-display font-semibold tracking-tight; }
+  h1 { @apply text-[1.75rem]; }
+  :focus-visible { @apply outline outline-2 outline-offset-2 outline-route; }
+}
+@layer components {
+  .panel { @apply rounded-lg border border-rule bg-panel; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded px-3.5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-route text-white hover:bg-route-dark; }
+  .btn-ghost { @apply btn border border-rule bg-panel text-ink hover:bg-route-soft; }
+  .btn-danger { @apply btn bg-alarm text-white hover:opacity-90; }
+  .input { @apply w-full rounded border border-rule bg-white px-3 py-2 text-sm placeholder:text-slate/60; }
+  .label { @apply mb-1 block text-sm font-medium text-ink; }
+  .th { @apply border-b border-rule bg-paper px-3 py-2 text-left text-sm font-semibold text-slate; }
+  .td { @apply border-b border-rule/70 px-3 py-2 text-sm; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+@layer components {
+  .titulo-seccion { @apply font-display text-2xl font-extrabold text-route; }
+  .titulo-seccion::after { content: ''; display: block; width: 56px; height: 4px; margin-top: 6px; border-radius: 2px; background: theme('colors.verde.DEFAULT'); }
+}
