@@ -133,12 +133,7 @@ export async function sembrar() {
   await TarjetaAcceso.bulkCreate([
     { numero: 'TM-0001-2026', saldo: 25, id_usuario: pasajero.id_usuario }, { numero: 'TM-0002-2026', saldo: 0.5 }, { numero: 'TM-0003-2026', saldo: 100 },
   ]);
-  await Usuario.bulkCreate([
-    { nombre: 'Administrador Central', email: 'admin@transmetro.gt', password_hash: await h(process.env.SEED_ADMIN_PASSWORD ?? 'Admin123!'), rol: 'admin' },
-    { nombre: 'Personal Muni Guatemala', email: 'municipal@transmetro.gt', password_hash: await h('Muni12345!'), rol: 'municipal', id_municipalidad: gt.id_municipalidad },
-    { nombre: 'Operador Centra Norte', email: 'operador@transmetro.gt', password_hash: await h('Oper12345!'), rol: 'operador', id_estacion: centra.id_estacion },
-    { nombre: 'Guardia Centra Norte', email: 'guardia@transmetro.gt', password_hash: await h('Guardia123!'), rol: 'guardia', id_estacion: centra.id_estacion },
-  ]);
+  await asegurarUsuariosDemo();
 
   // Datos de demostración de finanzas y demanda (no se cargan en las pruebas automáticas, que parten de cero)
   if (process.env.NODE_ENV !== 'test') {
@@ -149,7 +144,33 @@ export async function sembrar() {
       console.warn('No se pudieron cargar los datos de demostración de finanzas y demanda:', e?.message ?? e);
     }
   }
-  console.log('Datos de demostración cargados.\n  admin@transmetro.gt / Admin123!\n  municipal@transmetro.gt / Muni12345!\n  operador@transmetro.gt / Oper12345!\n  guardia@transmetro.gt / Guardia123!\n  pasajero@transmetro.gt / Pasajero123!');
+  console.log(`Datos de demostración cargados.\n  admin@transmetro.gt / ${process.env.SEED_ADMIN_PASSWORD ? '(la de SEED_ADMIN_PASSWORD)' : 'Admin123!'}`
+    + '\n  municipal@transmetro.gt / Muni12345!\n  operador@transmetro.gt / Oper12345!\n  guardia@transmetro.gt / Guardia123!\n  pasajero@transmetro.gt / Pasajero123!');
+}
+
+// Crea las cuentas del personal que falten (sin tocar las existentes). Se llama al sembrar y al arrancar con AUTO_SEED,
+// así una base que ya tenía usuarios (p. ej. un pasajero registrado) no se queda sin administrador.
+// RESET_ADMIN_PASSWORD=true vuelve a poner la clave de SEED_ADMIN_PASSWORD al administrador y lo reactiva.
+export async function asegurarUsuariosDemo() {
+  const gt: any = await Municipalidad.findOne({ where: { nombre: 'Guatemala' } });
+  const centra: any = await Estacion.findOne({ where: { nombre: 'Centra Norte' } });
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'Admin123!';
+  const cuentas = [
+    { nombre: 'Administrador Central', email: 'admin@transmetro.gt', password: adminPassword, rol: 'admin' },
+    { nombre: 'Personal Muni Guatemala', email: 'municipal@transmetro.gt', password: 'Muni12345!', rol: 'municipal', id_municipalidad: gt?.id_municipalidad ?? null },
+    { nombre: 'Operador Centra Norte', email: 'operador@transmetro.gt', password: 'Oper12345!', rol: 'operador', id_estacion: centra?.id_estacion ?? null },
+    { nombre: 'Guardia Centra Norte', email: 'guardia@transmetro.gt', password: 'Guardia123!', rol: 'guardia', id_estacion: centra?.id_estacion ?? null },
+  ];
+  for (const { password, ...c } of cuentas) {
+    const existe: any = await Usuario.findOne({ where: { email: c.email } });
+    if (!existe) {
+      await Usuario.create({ ...c, password_hash: await bcrypt.hash(password, 10) });
+      console.log(`Usuario creado: ${c.email}`);
+    } else if (c.rol === 'admin' && process.env.RESET_ADMIN_PASSWORD === 'true') {
+      await existe.update({ password_hash: await bcrypt.hash(password, 10), activo: true, rol: 'admin' });
+      console.log('Contraseña del administrador restablecida desde SEED_ADMIN_PASSWORD.');
+    }
+  }
 }
 
 // Se ejecuta solo con `npm run seed`; al importarlo desde las pruebas no hace nada por sí solo.

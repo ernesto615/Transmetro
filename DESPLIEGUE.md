@@ -146,7 +146,8 @@ Las demás cuentas de demostración (municipal, operador, guardia, pasajero) sig
 | Error de conexión a la base | Revise `DATABASE_URL` (completa, con `sslmode=require`) y desactive el *pooling* en Neon |
 | Falla el build con "out of memory" | Reintente con *Manual Deploy → Clear build cache & deploy* |
 | La página abre pero el mapa sale gris | El navegador no pudo cargar OpenStreetMap; revise internet |
-| Al iniciar sesión dice credenciales incorrectas | Use la contraseña de `SEED_ADMIN_PASSWORD`, no `Admin123!` |
+| El mapa muestra "Access blocked" / 403 | OpenStreetMap rechaza mosaicos pedidos sin `Referer`. Ya corregido (política `strict-origin-when-cross-origin`); publique la versión nueva y recargue con Ctrl+F5 |
+| Al iniciar sesión dice credenciales incorrectas | Use la contraseña de `SEED_ADMIN_PASSWORD`, no `Admin123!`. Si aun así falla, agregue `RESET_ADMIN_PASSWORD=true`, reinicie el servicio (crea las cuentas del personal que falten y restablece la clave del admin) y luego quite esa variable |
 | Cambió código y la base no tiene las columnas nuevas | Vuelva a ejecutar `npm run seed` contra Neon (sección 5) |
 | El servicio dice "Failed" al iniciar | Revise *Logs*; lo más común es faltar `JWT_SECRET` o `DATOS_CLAVE` |
 

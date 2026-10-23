@@ -25,7 +25,7 @@ function MapaRed({ red, buscar }: { red: any; buscar: string }) {
     if (!el.current) return;
     const m = L.map(el.current, { scrollWheelZoom: false }).setView([14.6, -90.53], 12);
     mapa.current = m;
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 19 }).addTo(m);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 19, referrerPolicy: 'strict-origin-when-cross-origin' }).addTo(m);
 
     red.lineas.forEach((l: any, i: number) => {
       const pts = l.paradas.filter((p: any) => p.latitud != null).map((p: any) => [p.latitud, p.longitud] as [number, number]);

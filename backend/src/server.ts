@@ -2,7 +2,7 @@ import http from 'http';
 import { app } from './app.js';
 import { env } from './config/env.js';
 import { sequelize, Usuario } from './db.js';
-import { sembrar } from './seed.js';
+import { sembrar, asegurarUsuariosDemo } from './seed.js';
 import { initRealtime } from './realtime.js';
 
 async function main() {
@@ -14,6 +14,8 @@ async function main() {
   if (process.env.AUTO_SEED === 'true' && (await Usuario.count()) === 0) {
     console.log('Base vacía: cargando datos de demostración…');
     await sembrar();
+  } else if (process.env.AUTO_SEED === 'true' || process.env.RESET_ADMIN_PASSWORD === 'true') {
+    await asegurarUsuariosDemo(); // base con datos pero sin cuentas del personal (o clave de admin perdida)
   }
   const server = http.createServer(app);
   initRealtime(server);

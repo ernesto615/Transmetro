@@ -20,6 +20,8 @@ app.use(helmet({
       'upgrade-insecure-requests': null, // permite probar la versión compilada también por http://localhost
     },
   },
+  // Helmet manda "no-referrer" por defecto y OpenStreetMap bloquea (403 "Access blocked") los mosaicos pedidos sin Referer.
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 app.use(cors({ origin: env.CORS_ORIGIN }));
 app.use(express.json({ limit: '200kb' }));

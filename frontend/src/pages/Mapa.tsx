@@ -17,7 +17,7 @@ export default function Mapa() {
     if (!el.current) return;
     let cancelado = false; // evita dibujar sobre un mapa ya destruido (React monta el efecto dos veces en desarrollo)
     const map = L.map(el.current).setView([14.6, -90.53], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 19 }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 19, referrerPolicy: 'strict-origin-when-cross-origin' }).addTo(map);
     const marcadores = new Map<number, L.CircleMarker>();
     const colorLinea = new Map<number, string>();
 
