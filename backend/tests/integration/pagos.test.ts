@@ -60,7 +60,8 @@ describe('Portal del pasajero (RF-9)', () => {
     const reg = await api().post('/api/auth/registro').send({ nombre: 'Ana Pérez', email: 'ana@correo.com', password: 'Clave12345' });
     expect(reg.status).toBe(201);
     const t = reg.body.token;
-    const tarjeta = await api().post('/api/mi/tarjetas/solicitar').set(auth(t)).send({});
+    // La primera solicitud exige teléfono y DPI o NIT
+    const tarjeta = await api().post('/api/mi/tarjetas/solicitar').set(auth(t)).send({ telefono: '55550199', dpi: '2987654321098' });
     expect(tarjeta.status).toBe(201);
     expect(tarjeta.body.numero).toMatch(/^TM-\d{8}-\d{4}$/);
     expect((await api().get('/api/mi/tarjetas').set(auth(t))).body).toHaveLength(1);
